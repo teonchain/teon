@@ -1,4 +1,6 @@
 {
   "version": 2,
-  "public": true
+  "routes": [
+    { "src": "/api/teon", "dest": "api-teon.js" }
+  ]
 }

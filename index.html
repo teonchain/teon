@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Teon</title>
   <style>
     html, body {
@@ -18,7 +18,7 @@
       flex-direction: column;
       justify-content: flex-start;
       align-items: center;
-      height: 100dvh;
+      height: 100vh;
       padding: 10px;
       box-sizing: border-box;
     }
@@ -53,7 +53,17 @@
     const chatBox = document.getElementById('chat-box');
     const chatInput = document.getElementById('chat-input');
 
-    chatInput.addEventListener('keypress', function(e) {
+    async function sendQuestion(question) {
+      const response = await fetch('/api/teon', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question })
+      });
+      const data = await response.json();
+      return data.answer;
+    }
+
+    chatInput.addEventListener('keypress', async function(e) {
       if (e.key === 'Enter' && chatInput.value.trim()) {
         const userInput = chatInput.value.trim();
         const userMessage = document.createElement('div');
@@ -61,9 +71,13 @@
         chatBox.appendChild(userMessage);
         chatInput.value = '';
 
-        const response = document.createElement('div');
-        response.textContent = '...thinking...';
-        chatBox.appendChild(response);
+        const botMessage = document.createElement('div');
+        botMessage.textContent = '...thinking...';
+        chatBox.appendChild(botMessage);
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        const reply = await sendQuestion(userInput);
+        botMessage.textContent = reply;
         chatBox.scrollTop = chatBox.scrollHeight;
       }
     });

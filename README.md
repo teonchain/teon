@@ -1,3 +1,3 @@
-# Teon
+# Teon (ChatGPT Integrated)
 
-Site oficial da Teon com interface 100% via chat e filosofia baseada em razão, consciência e ética.
+Site da Teon com chat dinâmico usando a API da OpenAI.
