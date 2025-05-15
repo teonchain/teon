@@ -2,45 +2,54 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Teon</title>
   <style>
-    body {
+    html, body {
       margin: 0;
       padding: 0;
       background-color: #000;
       color: #fff;
       font-family: monospace;
+      height: 100%;
+      overflow: hidden;
+    }
+    #container {
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: flex-start;
       align-items: center;
       height: 100vh;
+      padding: 10px;
+      box-sizing: border-box;
     }
     #chat-box {
-      width: 90%;
+      width: 100%;
       max-width: 800px;
-      height: 70vh;
+      flex: 1;
       background-color: #111;
       border: 1px solid #444;
       padding: 1rem;
       overflow-y: auto;
-      margin-bottom: 1rem;
+      margin-bottom: 0.5rem;
     }
-    input {
-      width: 90%;
+    #chat-input {
+      width: 100%;
       max-width: 800px;
       padding: 1rem;
       font-family: monospace;
       background-color: #222;
       color: #fff;
       border: 1px solid #555;
+      box-sizing: border-box;
     }
   </style>
 </head>
 <body>
-  <div id="chat-box"></div>
-  <input type="text" id="chat-input" placeholder="What would you like to know about Teon?" />
+  <div id="container">
+    <div id="chat-box"></div>
+    <input type="text" id="chat-input" placeholder="What would you like to know about Teon?" />
+  </div>
   <script>
     const chatBox = document.getElementById('chat-box');
     const chatInput = document.getElementById('chat-input');
