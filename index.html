@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Teon</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #000;
+      color: #fff;
+      font-family: monospace;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    #chat-box {
+      width: 90%;
+      max-width: 800px;
+      height: 70vh;
+      background-color: #111;
+      border: 1px solid #444;
+      padding: 1rem;
+      overflow-y: auto;
+      margin-bottom: 1rem;
+    }
+    input {
+      width: 90%;
+      max-width: 800px;
+      padding: 1rem;
+      font-family: monospace;
+      background-color: #222;
+      color: #fff;
+      border: 1px solid #555;
+    }
+  </style>
+</head>
+<body>
+  <div id="chat-box"></div>
+  <input type="text" id="chat-input" placeholder="What would you like to know about Teon?" />
+  <script>
+    const chatBox = document.getElementById('chat-box');
+    const chatInput = document.getElementById('chat-input');
+
+    chatInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter' && chatInput.value.trim()) {
+        const userInput = chatInput.value.trim();
+        const userMessage = document.createElement('div');
+        userMessage.textContent = '> ' + userInput;
+        chatBox.appendChild(userMessage);
+        chatInput.value = '';
+
+        const response = document.createElement('div');
+        response.textContent = '...thinking...';
+        chatBox.appendChild(response);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }
+    });
+  </script>
+</body>
+</html>
