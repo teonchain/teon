@@ -1,6 +1,11 @@
 {
   "version": 2,
+  "builds": [
+    { "src": "api/teon.js", "use": "@vercel/node" },
+    { "src": "index.html", "use": "@vercel/static" }
+  ],
   "routes": [
-    { "src": "/api/teon", "dest": "api-teon.js" }
+    { "src": "/api/teon", "dest": "api/teon.js" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
