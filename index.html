@@ -47,10 +47,11 @@
           });
 
           const data = await res.json();
-          if (res.ok) {
+
+          if (res.ok && data.answer) {
             output.innerText += `\n${data.answer}\n`;
           } else {
-            output.innerText += `\n[Error]: ${data.error}\n`;
+            output.innerText += `\n[Error]: ${data.error || 'Unknown error'}\n`;
           }
         } catch (err) {
           output.innerText += `\n[Connection Error]: ${err.message}\n`;
@@ -60,3 +61,4 @@
   </script>
 </body>
 </html>
+
