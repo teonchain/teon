@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Teon Terminal</title>
+  <meta http-equiv="Cache-Control" content="no-store" />
+  <title>Teon</title>
   <style>
     html, body {
       margin: 0;
@@ -23,6 +24,7 @@
       padding: 20px;
       overflow-y: auto;
       box-sizing: border-box;
+      width: 100%;
       max-width: 960px;
       margin: 0 auto;
     }
@@ -32,34 +34,29 @@
       font-size: 1rem;
     }
 
- #input-container {
-  display: flex;
-  padding: 10px;
-  background: #000;
-  border-top: 1px solid #333;
-  box-sizing: border-box;
-  width: 100%;
-  max-width: 100%;
-  margin: 0;
-}
+    #input-container {
+      display: flex;
+      padding: 10px;
+      background: #000;
+      border-top: 1px solid #333;
+      box-sizing: border-box;
+      width: 100%;
+      max-width: 100%;
+      margin: 0;
+    }
 
-#input {
-  flex: 1;
-  width: 100%;
-  padding: 8px;
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid #555;
-  color: #fff;
-  font-family: monospace;
-  font-size: 1rem;
-  outline: none;
-  box-sizing: border-box;
-}
-
-
-    #input::placeholder {
-      color: #666;
+    #input {
+      flex: 1;
+      width: 100%;
+      padding: 8px;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid #555;
+      color: #fff;
+      font-family: monospace;
+      font-size: 1rem;
+      outline: none;
+      box-sizing: border-box;
     }
 
     .user-line::before {
@@ -71,20 +68,11 @@
       margin-left: 2ch;
       color: #ccc;
     }
-
-    @media (max-width: 600px) {
-      #input-container, #chat-container {
-        padding: 10px;
-      }
-      #input {
-        font-size: 0.9rem;
-      }
-    }
   </style>
 </head>
 <body>
   <div id="chat-container">
-    <div id="output" id="output">&gt; <span id="prompt"></span></div>
+    <div id="output">&gt; <span id="prompt"></span></div>
   </div>
 
   <div id="input-container">
@@ -129,7 +117,7 @@
           const res = await fetch('/api/teon', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ question }),
+            body: JSON.stringify({ question })
           });
 
           const data = await res.json();
