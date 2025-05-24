@@ -5,37 +5,86 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Teon</title>
   <style>
-    body {
+    html, body {
       margin: 0;
-      padding: 20px;
+      padding: 0;
+      height: 100%;
       background-color: #000;
       color: #fff;
       font-family: monospace;
+      display: flex;
+      flex-direction: column;
     }
+
+    #chat-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 10px;
+      overflow-y: auto;
+      box-sizing: border-box;
+    }
+
     #output {
       white-space: pre-wrap;
     }
-    input {
-      width: 100%;
+
+    #input-container {
+      display: flex;
+      border-top: 1px solid #444;
+      padding: 10px;
+      background: #111;
+    }
+
+    #input {
+      flex: 1;
       padding: 10px;
       background: #111;
       color: #fff;
       border: none;
-      border-bottom: 1px solid #444;
       font-family: monospace;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    @media (max-width: 600px) {
+      #input {
+        font-size: 0.9rem;
+      }
     }
   </style>
 </head>
 <body>
-  <div id="output">&gt; What would you like to know about Teon?</div>
-  <input id="input" autocomplete="off" autofocus />
+  <div id="chat-container">
+    <div id="output">&gt; <span id="prompt"></span></div>
+  </div>
+
+  <div id="input-container">
+    <input id="input" type="text" placeholder="" autocomplete="off" />
+  </div>
+
   <script>
     const input = document.getElementById('input');
     const output = document.getElementById('output');
+    const prompt = document.getElementById('prompt');
+
+    const prompts = {
+      en: 'What would you like to know about Teon?',
+      pt: 'O que você gostaria de saber sobre a Teon?'
+    };
+
+    function getLang() {
+      const lang = (navigator.language || 'en').slice(0, 2).toLowerCase();
+      return prompts[lang] ? lang : 'en';
+    }
+
+    const lang = getLang();
+    prompt.textContent = prompts[lang];
+    input.placeholder = prompts[lang];
 
     input.addEventListener('keydown', async (e) => {
-      if (e.key === 'Enter') {
-        const question = input.value;
+      if (e.key === 'Enter' && input.value.trim()) {
+        const question = input.value.trim();
         output.innerText += `\n> ${question}\n...thinking...`;
         input.value = '';
 
@@ -47,7 +96,6 @@
           });
 
           const data = await res.json();
-
           if (res.ok && data.answer) {
             output.innerText += `\n${data.answer}\n`;
           } else {
@@ -56,9 +104,12 @@
         } catch (err) {
           output.innerText += `\n[Connection Error]: ${err.message}\n`;
         }
+
+        // Scroll to bottom
+        const container = document.getElementById('chat-container');
+        container.scrollTop = container.scrollHeight;
       }
     });
   </script>
 </body>
 </html>
-
