@@ -10,11 +10,13 @@
       margin: 0;
       padding: 0;
       height: 100%;
+      width: 100%;
       background-color: #000;
       color: #ccc;
       font-family: monospace;
       display: flex;
       flex-direction: column;
+      box-sizing: border-box;
     }
 
     #chat-container {
@@ -34,14 +36,13 @@
       font-size: 1rem;
     }
 
-     #input-container {
+    #input-container {
       display: flex;
       padding: 10px;
       background: #000;
       border-top: 1px solid #333;
       box-sizing: border-box;
-      width: 100%;
-      max-width: 100%;
+      width: 100vw;
       margin: 0;
     }
 
@@ -72,31 +73,16 @@
 </head>
 <body>
   <div id="chat-container">
-    <div id="output">&gt; <span id="prompt"></span></div>
+    <div id="output">&gt; <span id="prompt">What would you like to know about Teon?</span></div>
   </div>
 
   <div id="input-container">
-    <input id="input" type="text" placeholder="" autocomplete="off" />
+    <input id="input" type="text" placeholder="What would you like to know about Teon?" autocomplete="off" />
   </div>
 
   <script>
     const input = document.getElementById('input');
     const output = document.getElementById('output');
-    const prompt = document.getElementById('prompt');
-
-    const prompts = {
-      en: 'What would you like to know about Teon?',
-      pt: 'O que você gostaria de saber sobre a Teon?'
-    };
-
-    function getLang() {
-      const lang = (navigator.language || 'en').slice(0, 2).toLowerCase();
-      return prompts[lang] ? lang : 'en';
-    }
-
-    const lang = getLang();
-    prompt.textContent = prompts[lang];
-    input.placeholder = prompts[lang];
 
     input.addEventListener('keydown', async (e) => {
       if (e.key === 'Enter' && input.value.trim()) {
@@ -145,3 +131,4 @@
   </script>
 </body>
 </html>
+
