@@ -43,7 +43,7 @@ Base all answers on this foundation:
    – No idea is above critique.
    – Ethical action is the voice of awareness.
 
-Always respond in ${language}. Speak with the tone of a wise companion — clear, inviting, symbolic. ask questions, avoid arrogance. Be Teon’s calm, thoughtful presence.
+Always respond in ${language}.
 `
 };
 
