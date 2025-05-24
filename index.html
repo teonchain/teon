@@ -5,80 +5,56 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Teon</title>
   <style>
-    html, body {
+    body {
       margin: 0;
-      padding: 0;
+      padding: 20px;
       background-color: #000;
       color: #fff;
       font-family: monospace;
-      height: 100%;
     }
-    #container {
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: center;
-      height: 100vh;
+    #output {
+      white-space: pre-wrap;
+    }
+    input {
+      width: 100%;
       padding: 10px;
-      box-sizing: border-box;
-    }
-    #chat-box {
-      width: 100%;
-      max-width: 800px;
-      flex-grow: 1;
-      background-color: #111;
-      border: 1px solid #444;
-      padding: 1rem;
-      overflow-y: auto;
-      margin-bottom: 10px;
-    }
-    #chat-input {
-      width: 100%;
-      max-width: 800px;
-      padding: 1rem;
-      font-family: monospace;
-      background-color: #222;
+      background: #111;
       color: #fff;
-      border: 1px solid #555;
-      box-sizing: border-box;
+      border: none;
+      border-bottom: 1px solid #444;
+      font-family: monospace;
     }
   </style>
 </head>
 <body>
-  <div id="container">
-    <div id="chat-box"></div>
-    <input type="text" id="chat-input" placeholder="What would you like to know about Teon?" />
-  </div>
+  <div id="output">&gt; What would you like to know about Teon?</div>
+  <input id="input" autocomplete="off" autofocus />
   <script>
-    const chatBox = document.getElementById('chat-box');
-    const chatInput = document.getElementById('chat-input');
+    const input = document.getElementById('input');
+    const output = document.getElementById('output');
 
-    async function sendQuestion(question) {
-      const response = await fetch('/api/teon', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question })
-      });
-      const data = await response.json();
-      return data.answer;
-    }
+    input.addEventListener('keydown', async (e) => {
+      if (e.key === 'Enter') {
+        const question = input.value;
+        output.innerText += `\n> ${question}\n...thinking...`;
+        input.value = '';
 
-    chatInput.addEventListener('keypress', async function(e) {
-      if (e.key === 'Enter' && chatInput.value.trim()) {
-        const userInput = chatInput.value.trim();
-        const userMessage = document.createElement('div');
-        userMessage.textContent = '> ' + userInput;
-        chatBox.appendChild(userMessage);
-        chatInput.value = '';
+        try {
+          const res = await fetch('/api/teon', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ question }),
+          });
 
-        const botMessage = document.createElement('div');
-        botMessage.textContent = '...thinking...';
-        chatBox.appendChild(botMessage);
-        chatBox.scrollTop = chatBox.scrollHeight;
-
-        const reply = await sendQuestion(userInput);
-        botMessage.textContent = reply;
-        chatBox.scrollTop = chatBox.scrollHeight;
+          const data = await res.json();
+          if (res.ok) {
+            output.innerText += `\n${data.answer}\n`;
+          } else {
+            output.innerText += `\n[Error]: ${data.error}\n`;
+          }
+        } catch (err) {
+          output.innerText += `\n[Connection Error]: ${err.message}\n`;
+        }
       }
     });
   </script>
