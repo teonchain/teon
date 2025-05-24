@@ -1,4 +1,4 @@
- <!DOCTYPE html><html lang="en">
+  <!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -49,21 +49,13 @@
   padding: 8px;
   background: transparent;
   border: none !important;
-  box-shadow: none !important;
-  outline: none !important;
   color: #0f0;
   font-family: monospace;
   font-size: 1rem;
+  outline: none;
+  box-sizing: border-box;
   caret-color: #0f0;
-  appearance: none;
   -webkit-appearance: none;
-  -moz-appearance: none;
-}
-
-input:focus {
-  outline: none !important;
-  border: none !important;
-  box-shadow: none !important;
 }
 
 input::-webkit-outer-spin-button,
@@ -92,10 +84,17 @@ input::-webkit-inner-spin-button {
   </div>  <script>
     const input = document.getElementById('input');
     const output = document.getElementById('output');
+    let languageDetected = null;
 
     input.addEventListener('keydown', async (e) => {
       if (e.key === 'Enter' && input.value.trim()) {
         const question = input.value.trim();
+
+        if (!languageDetected) {
+          const userLang = navigator.language || navigator.userLanguage;
+          languageDetected = /pt|br/i.test(userLang) || /[áéíóúãõçà]/i.test(question) ? 'portuguese' : 'english';
+        }
+
         const userLine = document.createElement('div');
         userLine.className = 'user-line';
         userLine.textContent = question;
@@ -112,7 +111,7 @@ input::-webkit-inner-spin-button {
           const res = await fetch('/api/teon', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ question })
+            body: JSON.stringify({ question, language: languageDetected })
           });
 
           const contentType = res.headers.get('content-type') || '';
@@ -138,4 +137,4 @@ input::-webkit-inner-spin-button {
       }
     });
   </script></body>
- </html>
+  </html>
