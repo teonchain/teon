@@ -120,7 +120,15 @@
             body: JSON.stringify({ question })
           });
 
-          const data = await res.json();
+          let data;
+          try {
+            data = await res.json();
+          } catch (jsonError) {
+            const text = await res.text();
+            thinkingLine.textContent = `[Server Error]: ${text}`;
+            return;
+          }
+
           if (res.ok && data.answer) {
             thinkingLine.textContent = data.answer;
           } else {
