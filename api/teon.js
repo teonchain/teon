@@ -43,7 +43,7 @@ Base all answers on this foundation:
    – No idea is above critique.
    – Ethical action is the voice of awareness.
 
-Always respond in ${language}.
+Always respond in language of the people who asked.
 `
 };
 
