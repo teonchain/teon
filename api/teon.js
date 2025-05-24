@@ -30,6 +30,7 @@ export default async function handler(req, res) {
     const answer = chat.choices[0].message.content.trim();
     res.status(200).json({ answer });
   } catch (error) {
-    res.status(500).json({ error: 'Something went wrong.' });
+    console.error('[Teon API Error]', error);
+    res.status(500).json({ error: error.message || 'Unknown error' });
   }
 }
