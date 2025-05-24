@@ -18,7 +18,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'No question provided.' });
     }
 
-    const language = 'english'; // fixo por enquanto
+    const language = question.match(/[áéíóúãõçà]/i) ? 'portuguese' : 'english';
 
     const systemMessage = {
       role: 'system',
