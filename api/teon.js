@@ -43,7 +43,7 @@ Do not name specific religions or technologies. Do not mention artificial intell
     const chat = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [systemMessage, userMessage],
-      temperature: 0.7
+      temperature: 0.4
     });
 
     const answer = chat.choices?.[0]?.message?.content?.trim();
