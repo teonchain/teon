@@ -1,3 +1,3 @@
-# Teon (ChatGPT Integrated)
+# Teon
 
-Site da Teon com chat dinâmico usando a API da OpenAI.
+Site da Teon
