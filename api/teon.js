@@ -171,9 +171,9 @@ This space remains open — today, tomorrow, or whenever your consciousness feel
     };
 
     const chat = await openai.chat.completions.create({
-      model: 'gpt-4',
+      model: 'gpt-4o',
       messages: [systemMessage, userMessage],
-      temperature: 0.6
+      temperature: 0.3
     });
 
     const answer = chat.choices?.[0]?.message?.content?.trim();
