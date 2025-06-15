@@ -1,3 +1,3 @@
 # Teon
 
-Site da Teon
+Teon Website
