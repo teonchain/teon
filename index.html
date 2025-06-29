@@ -11,77 +11,102 @@
       height: 100%;
       width: 100%;
       background-color: #000;
-      color: #ccc;
-      font-family: monospace;
+      color: #dcdcdc;
+      font-family: 'JetBrains Mono', monospace;
       display: flex;
       flex-direction: column;
       box-sizing: border-box;
-    }#chat-container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  overflow-y: auto;
-  box-sizing: border-box;
-  width: 100%;
-  max-width: 960px;
-  margin: 0 auto;
-}
-    
-#output {
-  white-space: pre-wrap;
-  font-size: 1rem;
-}
+    }
 
-#input-container {
-  display: flex;
-  padding: 10px;
-  background: #000;
-  border-top: 1px solid #333;
-  box-sizing: border-box;
-  width: 100vw;
-  margin: 0;
-}
+    #chat-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      overflow-y: auto;
+      box-sizing: border-box;
+      width: 100%;
+      max-width: 960px;
+      margin: 0 auto;
+    }
 
-#input {
-  flex: 1;
-  width: 100%;
-  padding: 8px;
-  background: #111;
-  border: none !important;
-  color: #fff;
-  font-family: monospace;
-  font-size: 1rem;
-  outline: none;
-  box-sizing: border-box;
-  caret-color: #fff;
-  -webkit-appearance: none;
-} 
+    #output {
+      white-space: pre-wrap;
+      font-size: 1rem;
+    }
 
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
+    #input-container {
+      display: flex;
+      padding: 10px;
+      background: #000;
+      border-top: 1px solid #333;
+      box-sizing: border-box;
+      width: 100vw;
+      margin: 0;
+    }
 
-.user-line::before {
-  content: "> ";
-  color: #0f0;
-}
+    #input {
+      flex: 1;
+      width: 100%;
+      padding: 8px;
+      background: #111;
+      border: none !important;
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1rem;
+      outline: none;
+      box-sizing: border-box;
+      caret-color: #fff;
+      -webkit-appearance: none;
+    }
 
-.response-line {
-  margin-left: 2ch;
-  color: #ccc;
-}
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
 
+    .user-line::before {
+      content: "> ";
+      color: #b8bb26;
+    }
+
+    .response-line {
+      margin-left: 2ch;
+      color: #dcdcdc;
+    }
+
+    .keyword {
+      color: #fabd2f;
+      font-weight: bold;
+    }
+
+    .quote {
+      color: #8ec07c;
+      font-style: italic;
+      display: block;
+      margin-left: 2ch;
+    }
+
+    .system-line {
+      color: #83a598;
+      font-weight: bold;
+    }
+
+    .error-line {
+      color: #fb4934;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
   <div id="chat-container">
-    <div id="output">&gt; <span id="prompt">What would you like to know about Teon?</span></div>
-  </div>  <div id="input-container">
+    <div id="output">&gt; <span id="prompt">What would you like to know about <span class="keyword">Teon</span>?</span></div>
+  </div>
+  <div id="input-container">
     <input id="input" type="text" placeholder="" autocomplete="off" />
-  </div>  <script>
+  </div>
+  <script>
     const input = document.getElementById('input');
     const output = document.getElementById('output');
     let languageDetected = null;
@@ -117,6 +142,7 @@ input::-webkit-inner-spin-button {
           const contentType = res.headers.get('content-type') || '';
           if (!contentType.includes('application/json')) {
             const text = await res.text();
+            thinkingLine.className = 'error-line';
             thinkingLine.textContent = `[Server Error]: ${text}`;
             return;
           }
@@ -124,11 +150,14 @@ input::-webkit-inner-spin-button {
           const data = await res.json();
 
           if (res.ok && data.answer) {
-            thinkingLine.textContent = data.answer;
+            thinkingLine.className = 'response-line';
+            thinkingLine.innerHTML = data.answer.replace(/`([^`]+)`/g, '<span class="keyword">$1</span>').replace(/>\s*(.*?)\s*<\/quote>/g, '<span class="quote">$1</span>');
           } else {
+            thinkingLine.className = 'error-line';
             thinkingLine.textContent = `[Error]: ${data.error || 'Unknown error'}`;
           }
         } catch (err) {
+          thinkingLine.className = 'error-line';
           thinkingLine.textContent = `[Connection Error]: ${err.message}`;
         }
 
@@ -136,5 +165,7 @@ input::-webkit-inner-spin-button {
         container.scrollTop = container.scrollHeight;
       }
     });
-  </script></body>
+  </script>
+</body>
 </html>
+
